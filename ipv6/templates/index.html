@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯IPv6视频会议系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <!-- 配置页面 -->
+    <div id="config-page" class="page active">
+        <div class="app-container">
+            <header class="app-header">
+                <h1>🌐 纯IPv6视频会议系统</h1>
+                <p class="app-subtitle">基于IPv6的高性能视频会议解决方案</p>
+                <div class="ipv6-badge">IPv6 ONLY</div>
+            </header>
+
+            <main class="app-main">
+                <!-- IPv6连接状态区域 -->
+                <section class="status-section ipv6-status">
+                    <div class="status-header">
+                        <h2>IPv6连接状态：<span id="connectionStatus" class="status-disconnected">未连接</span></h2>
+                        <p id="connectionStatusText">正在检测IPv6连接...</p>
+                        <div class="ipv6-address-display">
+                            <strong>服务器IPv6地址:</strong>
+                            <code id="serverIPv6Address">{{ server_ipv6 }}</code>
+                        </div>
+                    </div>
+                </section>
+
+                <hr>
+
+                <!-- IPv6测试区域 -->
+                <section class="ipv6-test-section">
+                    <h3>🌐 IPv6连接测试</h3>
+                    <div class="ipv6-test-container">
+                        <button id="testIPv6" class="btn-test-ipv6">测试IPv6连接</button>
+                        <div id="ipv6TestResult" class="ipv6-test-result"></div>
+                    </div>
+                    <div class="ipv6-note">
+                        <p><strong>注意:</strong> 此系统仅支持IPv6网络。请确保您的设备和网络支持IPv6。</p>
+                    </div>
+                </section>
+
+                <!-- 房间控制区域 -->
+                <section class="room-section">
+                    <h3>🚪 房间控制</h3>
+
+                    <div class="room-input-group">
+                        <label for="roomIdInput">房间ID：</label>
+                        <input type="text" id="roomIdInput"
+                               placeholder="输入房间ID或留空自动生成">
+                    </div>
+
+                    <div class="room-controls">
+                        <button id="joinRoom" class="btn-primary">加入IPv6房间</button>
+                        <button id="createRoom" class="btn-secondary">创建IPv6房间</button>
+                        <button id="discoverRooms" class="btn-secondary">发现IPv6房间</button>
+                    </div>
+
+                    <!-- 房间创建确认提示 -->
+                    <div id="roomCreationMessage" class="room-creation-message">
+                        <p>IPv6房间创建成功！房间ID: <strong id="createdRoomId"></strong></p>
+                        <p>正在为您自动跳转到会议页面...</p>
+                    </div>
+
+                    <!-- 房间列表容器 -->
+                    <div id="roomList" class="room-list" style="display: none;">
+                        <div class="room-list-header">可用IPv6房间</div>
+                        <div id="roomListContent"></div>
+                    </div>
+                </section>
+
+                <!-- 连接设置区域 -->
+                <section class="settings-section">
+                    <h3>⚙️ 连接设置</h3>
+
+                    <div class="user-info">
+                        <label>IPv6用户ID：</label>
+                        <code id="userId">加载中...</code>
+                    </div>
+
+                    <div class="network-info">
+                        <h4>网络信息</h4>
+                        <div class="info-item">
+                            <label>协议:</label>
+                            <span class="ipv6-protocol">IPv6 Only</span>
+                        </div>
+                        <div class="info-item">
+                            <label>WebRTC:</label>
+                            <span id="webrtcStatus" class="status-testing">检测中...</span>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <footer class="app-footer">
+                <p>纯IPv6视频会议系统 v2.0 &copy; 2023 - 专为下一代互联网设计</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- 会议页面 -->
+    <div id="conference-page" class="page">
+        <div class="conference-container">
+            <!-- 会议头部 -->
+            <header class="conference-header">
+                <div class="header-left">
+                    <h2>🌐 IPv6视频会议</h2>
+                    <p class="room-info" id="conferenceRoomInfo">IPv6房间: <span id="currentRoomId">未加入房间</span></p>
+                </div>
+                <div class="connection-status">
+                    <div class="status-indicator connected">
+                        <span>🌐</span>
+                        <span>IPv6已连接</span>
+                    </div>
+                    <div class="participant-count">
+                        <span id="participantCount">1</span> 人在线
+                    </div>
+                    <button id="leaveRoom" class="btn-leave">离开会议</button>
+                </div>
+            </header>
+
+            <!-- 会议主区域 -->
+            <main class="conference-main">
+                <!-- 视频区域 -->
+                <div class="video-area">
+                    <!-- 本地视频 -->
+                    <div class="local-video">
+                        <div class="video-header">
+                            <div class="video-title">本地视频 (IPv6)</div>
+                            <div class="video-status">
+                                <span class="status-icon">📹</span>
+                                <span class="status-icon">🔊</span>
+                            </div>
+                        </div>
+                        <video id="localVideo" autoplay muted></video>
+                        <div class="video-overlay">
+                            <div class="user-name" id="localUserName">您</div>
+                        </div>
+                    </div>
+
+                    <!-- 远程视频容器 -->
+                    <div class="remote-videos-container" id="remoteVideosContainer">
+                        <!-- 空状态 -->
+                        <div class="empty-state">
+                            <div class="empty-icon">👥</div>
+                            <h3>等待其他IPv6用户加入</h3>
+                            <p>邀请其他人通过IPv6加入此房间开始视频会议</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- 控制按钮栏 -->
+            <div class="controls-bar">
+                <div class="controls-left">
+                    <button id="toggleVideo" class="control-btn active">
+                        <span class="btn-icon">📹</span>
+                        <span class="btn-text">摄像头</span>
+                    </button>
+                    <button id="toggleAudio" class="control-btn active">
+                        <span class="btn-icon">🔊</span>
+                        <span class="btn-text">麦克风</span>
+                    </button>
+                </div>
+                <div class="controls-center">
+                    <button id="shareScreen" class="control-btn">
+                        <span class="btn-icon">🖥️</span>
+                        <span class="btn-text">共享屏幕</span>
+                    </button>
+                </div>
+                <div class="controls-right">
+                    <button id="showParticipants" class="control-btn btn-participants">
+                        <span class="btn-icon">👥</span>
+                    </button>
+                    <button id="showNetworkInfo" class="control-btn btn-network">
+                        <span class="btn-icon">🌐</span>
+                    </button>
+                    <button id="leaveConference" class="control-btn btn-leave">
+                        <span class="btn-icon">📞</span>
+                        <span class="btn-text">离开</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 侧边栏 - 参与者列表 -->
+            <div class="sidebar" id="participantsSidebar">
+                <div class="sidebar-header">
+                    <h3>IPv6参与者</h3>
+                    <button class="btn-close" id="closeParticipants">×</button>
+                </div>
+                <div class="sidebar-content">
+                    <ul class="participants-list" id="participantsList">
+                        <li class="participant-item">
+                            <div class="participant-avatar">您</div>
+                            <div class="participant-name">您 (本地)</div>
+                            <div class="participant-status">
+                                <span>📹</span>
+                                <span>🔊</span>
+                                <span>🌐</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 网络信息侧边栏 -->
+            <div class="sidebar" id="networkSidebar">
+                <div class="sidebar-header">
+                    <h3>IPv6网络信息</h3>
+                    <button class="btn-close" id="closeNetwork">×</button>
+                </div>
+                <div class="sidebar-content">
+                    <div class="network-stats">
+                        <div class="stat-item">
+                            <label>连接类型:</label>
+                            <span id="connectionType">IPv6</span>
+                        </div>
+                        <div class="stat-item">
+                            <label>WebRTC状态:</label>
+                            <span id="webrtcConnectionStatus">连接中...</span>
+                        </div>
+                        <div class="stat-item">
+                            <label>数据通道:</label>
+                            <span id="dataChannelStatus">未建立</span>
+                        </div>
+                        <div class="stat-item">
+                            <label>ICE状态:</label>
+                            <span id="iceConnectionStatus">新建</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

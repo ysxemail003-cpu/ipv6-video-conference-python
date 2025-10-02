@@ -1,0 +1,885 @@
+/* 基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+}
+
+/* IPv6主题颜色 */
+:root {
+    --ipv6-blue: #1e3c72;
+    --ipv6-light-blue: #2a5298;
+    --ipv6-green: #00cc66;
+    --ipv6-dark: #0d1b2a;
+}
+
+/* 页面切换基础样式 */
+.page {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.page.active {
+    display: block;
+}
+
+/* 配置页面样式 */
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    min-height: 100vh;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+
+.app-header {
+    background: linear-gradient(135deg, var(--ipv6-blue) 0%, var(--ipv6-light-blue) 100%);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.app-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.app-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.ipv6-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--ipv6-green);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.app-main {
+    padding: 2rem;
+}
+
+/* IPv6状态区域 */
+.status-section.ipv6-status {
+    background: #f0f8ff;
+    border-left: 4px solid var(--ipv6-blue);
+}
+
+.ipv6-address-display {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #e6f2ff;
+    border-radius: 6px;
+    border: 1px solid #b3d9ff;
+}
+
+.ipv6-address-display code {
+    background: #d9edf7;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: #31708f;
+    margin-left: 0.5rem;
+}
+
+/* IPv6测试区域 */
+.ipv6-test-section {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    border-left: 4px solid var(--ipv6-green);
+}
+
+.ipv6-test-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.btn-test-ipv6 {
+    background: var(--ipv6-green);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-test-ipv6:hover {
+    background: #00b359;
+}
+
+.ipv6-test-result {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 6px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ipv6-test-result.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.ipv6-test-result.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.ipv6-note {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+/* 状态样式 */
+.status-disconnected { color: #dc3545; font-weight: bold; }
+.status-connected { color: var(--ipv6-green); font-weight: bold; }
+.status-error { color: #dc3545; font-weight: bold; }
+.status-testing { color: #17a2b8; font-weight: bold; }
+
+/* 服务器区域 */
+.server-section {
+    margin: 1.5rem 0;
+}
+
+.server-address-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.server-address {
+    background: #e9ecef;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+/* 房间控制区域 */
+.room-section {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    border-left: 4px solid var(--ipv6-light-blue);
+}
+
+.room-input-group {
+    margin-bottom: 1rem;
+}
+
+.room-input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+#roomIdInput {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.room-controls {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* 房间列表样式 */
+.room-list {
+    margin-top: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.room-list-header {
+    background: var(--ipv6-blue);
+    color: white;
+    padding: 0.75rem 1rem;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+}
+
+.room-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.room-item:last-child {
+    border-bottom: none;
+}
+
+.room-info {
+    flex: 1;
+}
+
+.room-name {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+    color: var(--ipv6-blue);
+}
+
+.room-details {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.room-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.empty-rooms {
+    padding: 1.5rem;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+/* 设置区域 */
+.settings-section {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    border-left: 4px solid #6c757d;
+}
+
+.user-info {
+    margin-bottom: 1rem;
+}
+
+.user-info label {
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.user-info code {
+    background: #e9ecef;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+.network-info {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.info-item label {
+    font-weight: bold;
+    min-width: 80px;
+    margin-right: 1rem;
+}
+
+.ipv6-protocol {
+    background: var(--ipv6-green);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+/* 按钮样式 */
+button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary {
+    background: var(--ipv6-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--ipv6-light-blue);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-test {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-test:hover {
+    background: #138496;
+}
+
+.btn-link {
+    background: none;
+    color: var(--ipv6-blue);
+    text-decoration: underline;
+    padding: 0.25rem;
+}
+
+.btn-small {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+/* 底部样式 */
+.app-footer {
+    background: var(--ipv6-dark);
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .app-main {
+        padding: 1rem;
+    }
+
+    .room-controls {
+        flex-direction: column;
+    }
+
+    .server-address-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ipv6-test-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .room-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .room-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+/* 会议页面样式 */
+.conference-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--ipv6-dark);
+    color: white;
+}
+
+/* 会议头部 */
+.conference-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #1a1a2e;
+    border-bottom: 1px solid #404040;
+}
+
+.header-left h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.room-info {
+    margin: 0;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.status-indicator.connected {
+    color: var(--ipv6-green);
+}
+
+.status-indicator.connecting {
+    color: #FF9800;
+}
+
+.status-indicator.disconnected {
+    color: #f44336;
+}
+
+.participant-count {
+    background: #404040;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+}
+
+.btn-leave {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-leave:hover {
+    background: #d32f2f;
+}
+
+/* 会议主区域 */
+.conference-main {
+    flex: 1;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 视频区域 */
+.video-area {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--ipv6-dark);
+}
+
+/* 本地视频样式 */
+.local-video {
+    position: relative;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    border: 2px solid var(--ipv6-blue);
+}
+
+.local-video .video-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.video-title {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.video-status {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.status-icon {
+    font-size: 0.8rem;
+}
+
+.local-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000;
+}
+
+.video-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+    padding: 1rem;
+    z-index: 10;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    color: white;
+}
+
+/* 远程视频容器 */
+.remote-videos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    align-content: start;
+}
+
+.remote-video {
+    position: relative;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    border: 1px solid var(--ipv6-light-blue);
+    min-height: 200px;
+}
+
+.remote-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000;
+}
+
+/* 空状态样式 */
+.empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    text-align: center;
+    padding: 2rem;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    margin: 0 0 0.5rem 0;
+    color: #ccc;
+}
+
+.empty-state p {
+    margin: 0;
+    color: #888;
+}
+
+/* 控制按钮栏 */
+.controls-bar {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(45, 45, 45, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    border: 1px solid #404040;
+    min-width: 600px;
+    z-index: 1000;
+}
+
+.controls-left, .controls-center, .controls-right {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.control-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #404040;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.control-btn:hover {
+    background: #505050;
+    transform: translateY(-2px);
+}
+
+.control-btn.active {
+    background: var(--ipv6-green);
+}
+
+.control-btn.btn-leave {
+    background: #f44336;
+}
+
+.control-btn.btn-leave:hover {
+    background: #d32f2f;
+}
+
+.control-btn.btn-fullscreen,
+.control-btn.btn-participants,
+.control-btn.btn-network,
+.control-btn.btn-settings {
+    padding: 0.75rem;
+    border-radius: 50%;
+}
+
+.btn-icon {
+    font-size: 1.1rem;
+}
+
+.btn-text {
+    font-weight: 500;
+}
+
+/* 侧边栏 */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100vh;
+    background: #2d2d2d;
+    border-left: 1px solid #404040;
+    z-index: 1001;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #404040;
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    color: white;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-close:hover {
+    color: white;
+    background: #404040;
+    border-radius: 50%;
+}
+
+.sidebar-content {
+    padding: 1rem;
+}
+
+.participants-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.participant-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    background: #404040;
+}
+
+.participant-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--ipv6-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.participant-name {
+    flex: 1;
+    font-size: 0.9rem;
+}
+
+.participant-status {
+    display: flex;
+    gap: 0.25rem;
+}
+
+/* 网络统计信息 */
+.network-stats {
+    padding: 1rem 0;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #404040;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-item label {
+    font-weight: bold;
+    color: #ccc;
+}
+
+.stat-item span {
+    background: var(--ipv6-blue);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .video-area {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .local-video {
+        max-height: 200px;
+    }
+
+    .controls-bar {
+        min-width: auto;
+        width: 90%;
+        padding: 0.75rem 1rem;
+    }
+
+    .btn-text {
+        display: none;
+    }
+
+    .control-btn {
+        padding: 0.75rem;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+}
+
+/* 视频加载状态 */
+.video-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2d2d2d;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.video-loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-top: 2px solid var(--ipv6-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 0.5rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 创建房间确认提示 */
+.room-creation-message {
+    background: #e7f3ff;
+    border-left: 4px solid var(--ipv6-blue);
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+    display: none;
+}
+
+.room-creation-message.show {
+    display: block;
+}
